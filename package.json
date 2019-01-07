@@ -1,6 +1,6 @@
 {
-  "name": "markdown-it-wikilinks",
-  "version": "1.0.1",
+  "name": "@gerhobbelt/markdown-it-wikilinks",
+  "version": "1.0.1-1",
   "description": "WikiMedia-style links for the markdown-it parser",
   "main": "index.js",
   "scripts": {
@@ -8,7 +8,8 @@
     "lint-init": "eslint --init",
     "lint": "eslint index.js",
     "test": "npm run lint && mocha -R spec",
-    "test-ci": "npm run lint && istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- -R spec && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rimraf ./coverage"
+    "test-ci": "npm run lint && istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- -R spec && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rimraf ./coverage",
+    "pub": "npm publish --access public"
   },
   "repository": {
     "type": "git",
@@ -29,18 +30,18 @@
   },
   "homepage": "https://github.com/jsepia/markdown-it-wikilinks#readme",
   "devDependencies": {
-    "coveralls": "^2.11.14",
-    "eslint": "^3.7.1",
-    "istanbul": "^0.4.5",
-    "markdown-it": "^8.0.0",
-    "markdown-it-testgen": "^0.1.4",
-    "mocha": "^3.1.0",
-    "request": "^2.75.0",
-    "rimraf": "^2.5.4"
+    "coveralls": "2.11.14",
+    "eslint": "3.7.1",
+    "istanbul": "0.4.5",
+    "@gerhobbelt/markdown-it": "8.0.0",
+    "@gerhobbelt/markdown-it-testgen": "0.1.4",
+    "mocha": "3.1.0",
+    "request": "2.75.0",
+    "rimraf": "2.5.4"
   },
   "dependencies": {
-    "extend": "^3.0.0",
-    "markdown-it-regexp": "^0.4.0",
-    "sanitize-filename": "^1.6.1"
+    "extend": "3.0.0",
+    "@gerhobbelt/markdown-it-regexp": "0.4.0",
+    "sanitize-filename": "1.6.1"
   }
 }
