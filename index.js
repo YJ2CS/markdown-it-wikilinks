@@ -1,6 +1,6 @@
 'use strict'
 
-const Plugin = require('markdown-it-regexp')
+const Plugin = require('@gerhobbelt/markdown-it-regexp')
 const extend = require('extend')
 const sanitize = require('sanitize-filename')
 
