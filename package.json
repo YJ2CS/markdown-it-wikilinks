@@ -1,5 +1,5 @@
 {
-  "name": "markdown-it-wikilinks",
+  "name": "@kwvanderlinde/markdown-it-wikilinks",
   "version": "1.0.1",
   "description": "WikiMedia-style links for the markdown-it parser",
   "main": "index.js",
@@ -12,7 +12,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/jsepia/markdown-it-wikilinks.git"
+    "url": "git+https://github.com/kwvanderlinde/markdown-it-wikilinks.git"
   },
   "keywords": [
     "markdown-it-plugin",
@@ -25,9 +25,9 @@
   "author": "Julio Sepia <jsepia@juliosepia.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/jsepia/markdown-it-wikilinks/issues"
+    "url": "https://github.com/kwvanderlinde/markdown-it-wikilinks/issues"
   },
-  "homepage": "https://github.com/jsepia/markdown-it-wikilinks#readme",
+  "homepage": "https://github.com/kwvanderlinde/markdown-it-wikilinks",
   "devDependencies": {
     "coveralls": "^2.11.14",
     "eslint": "^3.7.1",
