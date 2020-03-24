@@ -1,6 +1,6 @@
 {
   "name": "@kwvanderlinde/markdown-it-wikilinks",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "WikiMedia-style links for the markdown-it parser",
   "main": "index.js",
   "scripts": {
