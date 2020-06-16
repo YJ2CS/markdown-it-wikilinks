@@ -1,13 +1,12 @@
-'use strict';
+/* eslint-env mocha, es6 */
 
 const path = require('path');
-const generate = require('markdown-it-testgen');
-const plugin = require('../')()
+const generate = require('@gerhobbelt/markdown-it-testgen');
+const plugin = require('../')();
 
-/*eslint-env mocha*/
 
 describe('markdown-it-wikilinks', function () {
-  const md = require('markdown-it')()
+  const md = require('@gerhobbelt/markdown-it')({ linkify: true })
               .use(plugin);
 
   generate(path.join(__dirname, 'fixtures/wikilinks.txt'), md);
