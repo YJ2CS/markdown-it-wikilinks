@@ -13,7 +13,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/jsepia/markdown-it-wikilinks.git"
+    "url": "git+https://github.com/kwvanderlinde/markdown-it-wikilinks.git"
   },
   "keywords": [
     "markdown-it-plugin",
