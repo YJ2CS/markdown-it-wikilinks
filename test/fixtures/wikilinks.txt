@@ -50,3 +50,47 @@ This is [not a valid wiki link]] either
 .
 <p>This is [not a valid wiki link]] either</p>
 .
+
+And here are a few edge cases for the default 'accept everything' regex:
+
+.
+This is [[a valid wiki link] thanks to [the matching]] markers.
+.
+<p>This is <a href="./a_valid wiki link] thanks to [the matching.html">a valid wiki link] thanks to [the matching</a> markers.</p>
+.
+
+.
+Did [[anyone test]] [[many|multiple]] [[dir/fff|links]] in a single line?
+.
+<p>Did <a href="./anyone_test.html">anyone test</a> <a href="./many.html">multiple</a> <a href="./dir/fff.html">links</a> in a single line?</p>
+.
+
+.
+And [[how... about?some:nice:punctuation|what?about?this!]]
+.
+<p>And <a href="./how..._aboutsomenicepunctuation.html">what?about?this!</a></p>
+.
+
+.
+While [[dir/file[1]|this one]] has brackets in the URL, it **is** accepted.
+.
+<p>While <a href="./dir/file[1].html">this one</a> has brackets in the URL, it <strong>is</strong> accepted.</p>
+.
+
+.
+However, [[dir/file[[1]]|this one[[1]]]] does NOT deliver what you'ld expect!
+.
+<p>However, <a href="./dir/file[[1.html">dir/file[[1</a>|this one<a href="./1.html">1</a>]] does NOT deliver what you'ld expect!</p>
+.
+
+.
+Neither does [[[[This one]]]] do what it looks like at first glance!
+.
+<p>Neither does <a href="./[[This_one.html">[[This one</a>]] do what it looks like at first glance!</p>
+.
+
+.
+But [[then, however, yada yada, --there's this baby--it's me, "Papa Doc"]] who'll make it through unscathed.
+.
+<p>But <a href="./then,_however, yada yada, --there&#39;s this baby--it&#39;s me, Papa Doc.html">then, however, yada yada, --there's this baby--it's me, "Papa Doc"</a> who'll make it through unscathed.</p>
+.

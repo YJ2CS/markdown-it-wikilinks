@@ -1,14 +1,13 @@
 
-const Plugin = require('@gerhobbelt/markdown-it-regexp');
+const plugin = require('@gerhobbelt/markdown-it-regexp');
 const extend = require('extend');
 const sanitize = require('sanitize-filename');
 
 module.exports = (options) => {
 
   const defaults = {
-    linkPattern: /\[\[([\w\s/]+)(\|([\w\s/]+))?\]\]/,
-    //           /\[\[([\s\S/]+)(\|([\s\S/]+))?\]\]/
-    //           /\[\[([-\w\s\/]+)(\|([-\w\s\/]+))?\]\]/
+    linkPattern: /\[\[([^|]+?)(\|([\s\S]+?))?\]\]/,          // accept anything, except ] or |
+    //linkPattern: /\[\[([-\w\s\/]+)(\|([-\w\s\/]+))?\]\]/,  // accept words, dashes and whitespace
     baseURL: '/',
     relativeBaseURL: './',
     makeAllLinksAbsolute: false,
@@ -40,7 +39,7 @@ module.exports = (options) => {
     return str.replace(/^\/+/g, '');
   }
 
-  return Plugin(
+  return plugin(
     options.linkPattern,
     (match, utils) => {
       let label = '';
