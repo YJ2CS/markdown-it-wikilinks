@@ -56,7 +56,7 @@ And here are a few edge cases for the default 'accept everything' regex:
 .
 This is [[a valid wiki link] thanks to [the matching]] markers.
 .
-<p>This is <a href="./a_valid wiki link] thanks to [the matching.html">a valid wiki link] thanks to [the matching</a> markers.</p>
+<p>This is <a href="./a_valid_wiki_link]_thanks_to_[the_matching.html">a valid wiki link] thanks to [the matching</a> markers.</p>
 .
 
 .
@@ -92,5 +92,5 @@ Neither does [[[[This one]]]] do what it looks like at first glance!
 .
 But [[then, however, yada yada, --there's this baby--it's me, "Papa Doc"]] who'll make it through unscathed.
 .
-<p>But <a href="./then,_however, yada yada, --there&#39;s this baby--it&#39;s me, Papa Doc.html">then, however, yada yada, --there's this baby--it's me, "Papa Doc"</a> who'll make it through unscathed.</p>
+<p>But <a href="./then,_however,_yada_yada,_--there&#39;s_this_baby--it&#39;s_me,_Papa_Doc.html">then, however, yada yada, --there's this baby--it's me, "Papa Doc"</a> who'll make it through unscathed.</p>
 .
