@@ -8,8 +8,6 @@ extends: eslint:recommended
 parserOptions: 
   ecmaVersion: 2018
   sourceType: module
-  ecmaFeatures:
-    blockBindings: true
   
 rules:
   accessor-pairs:         2
