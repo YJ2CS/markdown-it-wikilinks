@@ -117,4 +117,4 @@ plugin.createTestInstance = function (setup) {
 };
 
 
-module.exports = plugin;
+export default plugin;
