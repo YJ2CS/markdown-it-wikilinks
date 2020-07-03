@@ -2,7 +2,7 @@
 
 const path = require('path');
 const generate = require('@gerhobbelt/markdown-it-testgen');
-const plugin = require('../');
+const plugin = require('../').createTestInstance();
 
 
 describe('markdown-it-wikilinks', function () {

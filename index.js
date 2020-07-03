@@ -4,19 +4,14 @@ const sanitize = require('sanitize-filename');
 
 
 
-let lastMatchToken;
-
 function removeInitialSlashes(str) {
   return str.replace(/^\/+/g, '');
 }
 
 // separate the setup/config object from the `md.use(...)` call for code clarity:
-const setup = {
+const defaultSetup = {
   pluginId: 'wikilink',
   replacer: function (match, setup, options, env, tokens, id) {
-    // when we get here, all parsing has been done: reset the token tracker:
-    lastMatchToken = null;
-
     let label = '';
     let pageName = '';
     let href = '';
@@ -38,7 +33,7 @@ const setup = {
     label = options.postProcessLabel(label);
     pageName = options.postProcessPageName(pageName);
 
-      // make sure none of the values are empty
+    // make sure none of the values are empty
     if (!label || !pageName) {
       return match.input;
     }
@@ -64,22 +59,6 @@ const setup = {
     // - showcase using the `setup` object
     // - showcase using the `tokens` stream + `id` index to access the token
     // return '\n' + setup.pluginId + ':' + options.opt1 + ':' + setup.escape(url) + ':' + options.opt2 + ':' + (token.wonko || '---') + ':' + token.type + ':' + token.nesting + ':' + token.level;
-  },
-  shouldParse: function (state, match, config, plugin_options) {
-    // do not accept wikilinks inside wikilinks: that's insane!
-    if (!lastMatchToken) {
-      return true;
-    }
-    let mpos = lastMatchToken.position;
-    let mend = mpos + lastMatchToken.size;
-    if (state.pos >= mpos && state.pos < mend) {
-      // inside an outer link chunk!
-      return false;
-    }
-    return true;
-  },
-  postprocessParse: function (state, token, config, plugin_options) {
-    lastMatchToken = token;
   },
   setup: function (config, options) {
     const defaults = {
@@ -114,9 +93,6 @@ const setup = {
       config.regexp = options.linkPattern;
     }
 
-    // reset token tracker:
-    lastMatchToken = null;
-
     return options;
   }
 };
@@ -125,8 +101,20 @@ const plugin = createPlugin(
   // regexp to match: fake one. Will be set up by setup callback instead.
   /./,
 
-  setup
+  Object.assign({}, defaultSetup)
 );
+
+// only use this for test rigs:
+plugin.createTestInstance = function (setup) {
+  createPlugin.reset();
+  const p = createPlugin(
+  // regexp to match: fake one. Will be set up by setup callback instead.
+    /./,
+
+    Object.assign({}, defaultSetup)
+  );
+  return p;
+};
 
 
 module.exports = plugin;

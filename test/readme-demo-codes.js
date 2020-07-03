@@ -1,16 +1,16 @@
 /* eslint-env mocha, es6 */
 
 const assert = require('assert');
-const wikilinks = require('../');
+const wikilinks = require('../').createTestInstance;
 const markdownIt = require('@gerhobbelt/markdown-it');
 
-xdescribe('markdown-it-wikilinks README demo code', function () {
+describe('markdown-it-wikilinks README demo code', function () {
   it('basic usage', () => {
 //...and *use* it:
 //
 //```js
     const options = undefined;
-    const md = markdownIt().use(wikilinks, options);
+    const md = markdownIt().use(wikilinks(), options);
     const html = md.render(
       'Click [[Wiki Links|here]] to learn about [[/Wiki]] links.'
     );
@@ -21,7 +21,9 @@ xdescribe('markdown-it-wikilinks README demo code', function () {
   describe('showcase options', () => {
     it('linkPattern', () => {
       const html = markdownIt()
-        .use(wikilinks, { linkPattern: /\[#([\w\s/!]+)(\|([\w\s/!]+))?#\]/ })
+        .use(wikilinks(), {
+          linkPattern: /\[#([\w\s/!]+)(\|([\w\s/!]+))?#\]/
+        })
         .render('[#Slate!#]');
       assert.strictEqual(
         html.trim(),
@@ -31,7 +33,9 @@ xdescribe('markdown-it-wikilinks README demo code', function () {
 
     it('baseURL', () => {
       const html = markdownIt()
-        .use(wikilinks, { baseURL: '/wiki/' })
+        .use(wikilinks(), {
+          baseURL: '/wiki/'
+        })
         .render('[[Main Page]] and also [[/fake-rooty page?]]');
       assert.strictEqual(
         html.trim(),
@@ -40,7 +44,10 @@ xdescribe('markdown-it-wikilinks README demo code', function () {
 
     it('relativeBaseURL', () => {
       const html = markdownIt()
-        .use(wikilinks, { relativeBaseURL: '#', suffix: '' })
+        .use(wikilinks(), {
+          relativeBaseURL: '#',
+          suffix: ''
+        })
         .render('[[Main Page]] and [[super/sub]]');
       assert.strictEqual(
         html.trim(),
@@ -50,7 +57,7 @@ xdescribe('markdown-it-wikilinks README demo code', function () {
 
     it('makeAllLinksAbsolute', () => {
       const html = markdownIt()
-        .use(wikilinks, {
+        .use(wikilinks(), {
           makeAllLinksAbsolute: true,
           baseURL: '/wiki/',
           relativeBaseURL: '#'
@@ -64,7 +71,9 @@ xdescribe('markdown-it-wikilinks README demo code', function () {
 
     it('uriSuffix', () => {
       const html = markdownIt()
-        .use(wikilinks, { uriSuffix: '.php' })
+        .use(wikilinks(), {
+          uriSuffix: '.php'
+        })
         .render('[[Main Page]]');
       assert.strictEqual(
         html.trim(),
@@ -78,7 +87,9 @@ xdescribe('markdown-it-wikilinks README demo code', function () {
         rel: 'nofollow'
       };
       const html = markdownIt()
-        .use(wikilinks, { htmlAttributes: attrs })
+        .use(wikilinks(), {
+          htmlAttributes: attrs
+        })
         .render('[[Main Page]]');
       assert.strictEqual(
         html.trim(),
@@ -106,7 +117,7 @@ xdescribe('markdown-it-wikilinks README demo code', function () {
       }
 
       const html = markdownIt()
-        .use(wikilinks, {
+        .use(wikilinks(), {
           generatePageNameFromLabel: myCustomPageNameGenerator
         })
         .render(
@@ -138,7 +149,9 @@ xdescribe('markdown-it-wikilinks README demo code', function () {
       }
 
       const html = markdownIt()
-        .use(wikilinks, { postProcessPageName: myCustomPageNamePostprocessor })
+        .use(wikilinks(), {
+          postProcessPageName: myCustomPageNamePostprocessor
+        })
         .render(
           'Vive la [[révolution!]] VIVE LA [[RÉVOLUTION!!!]]\n\nBut no cb for piped [[/Misc/Cats/Slate|kitty]].'
         );
@@ -163,7 +176,9 @@ xdescribe('markdown-it-wikilinks README demo code', function () {
       }
 
       const html = markdownIt()
-        .use(wikilinks, { postProcessLabel: myCustomLabelPostprocessor })
+        .use(wikilinks(), {
+          postProcessLabel: myCustomLabelPostprocessor
+        })
         .render(
           'Vive la [[révolution!]] VIVE LA [[RÉVOLUTION!!!]]\n\nBut no cb for piped [[/Misc/Cats/Slate|kitty]].'
         );
