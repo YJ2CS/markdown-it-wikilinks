@@ -17,16 +17,18 @@ npm --save install markdown-it-wikilinks
 ...and *use* it:
 
 ```js
-const wikilinks = require('markdown-it-wikilinks')(options)
+const wikilinks = require('markdown-it-wikilinks');
+const options = ...;
 const md = require('markdown-it')()
-    .use(wikilinks)
-    .render('Click [[Wiki Links|here]] to learn about [[/Wiki]] links.')
+    .use(wikilinks, options);
+const html = md
+    .render('Click [[Wiki Links|here]] to learn about [[/Wiki]] links.');
 ```
 
 **Output:**
 
 ```html
-<p>Click <a href="./Wiki_Links.html">here</a> to learn about <a href="/Wiki.html">Wiki</a> links.</p>
+<p>Click <a href="./Wiki_Links.html">here</a> to learn about <a href="/Wiki.html">/Wiki</a> links.</p>
 ```
 
 ## Options
@@ -37,12 +39,18 @@ const md = require('markdown-it')()
 
 The regex to use when matching WikiLinks.
 
+#### Example
+
 ```js
-// Allow exclamation marks to be used.
+// Using some non-standard markers for demo: [#...#] instead of [[...]]:
 const html = require('markdown-it')()
-  .use(require('markdown-it-wikilinks')({ linkPattern: /\[\[([\w\s/!]+)(\|([\w\s/!]+))?\]\]/ }))
-  .render('[[Slate!]]')
-  // <p><a href="./Slate!.html">Slate!</a></p>
+  .use(require('markdown-it-wikilinks'), { 
+    linkPattern: /\[#([\w\s/!]+)(\|([\w\s/!]+))?#\]/ 
+  })
+  .render('[#Slate!#]');
+assert.strictEqual(
+  html.trim(),
+  '<p><a href="./Slate!.html">Slate!</a></p>');
 ```
 
 ### `baseURL`
@@ -51,11 +59,18 @@ const html = require('markdown-it')()
 
 The base URL for absolute wiki links.
 
+#### Example
+
 ```js
 const html = require('markdown-it')()
-  .use(require('markdown-it-wikilinks')({ baseURL: '/wiki/' }))
-  .render('[[/Main Page]]')
-  // <p><a href="/wiki/Main_Page.html">Main Page</a></p>
+  .use(require('markdown-it-wikilinks'), { 
+    baseURL: '/wiki/' 
+  })
+  .render('[[Main Page]] and also [[/fake-rooty page?]]');
+assert.strictEqual(
+  html.trim(),
+  '<p><a href="./Main_Page.html">Main Page</a> and also <a href="/wiki/fake-rooty_page.html">/fake-rooty page?</a></p>'
+);
 ```
 
 ### `relativeBaseURL`
@@ -64,11 +79,19 @@ const html = require('markdown-it')()
 
 The base URL for relative wiki links.
 
+#### Example
+
 ```js
 const html = require('markdown-it')()
-  .use(require('markdown-it-wikilinks')({ relativeBaseURL: '#', suffix: '' }))
-  .render('[[Main Page]]')
-  // <p><a href="#Main_Page">Main Page</a></p>
+  .use(require('markdown-it-wikilinks'), { 
+    relativeBaseURL: '#', 
+    suffix: '' 
+  })
+  .render('[[Main Page]] and [[super/sub]]');
+assert.strictEqual(
+  html.trim(),
+  '<p><a href="#Main_Page.html">Main Page</a> and <a href="#super/sub.html">super/sub</a></p>'
+);
 ```
 
 ### `makeAllLinksAbsolute`
@@ -77,17 +100,41 @@ const html = require('markdown-it')()
 
 Render all wiki links as absolute links.
 
+#### Example
+
+```js
+const html = require('markdown-it')()
+  .use(require('markdown-it-wikilinks'), { 
+    makeAllLinksAbsolute: true,
+    baseURL: '/wiki/',
+    relativeBaseURL: '#'
+  })
+  .render('[[Main Page]] and also [[/fake-rooty page]]');
+assert.strictEqual(
+  html.trim(),
+  '<p><a href="/wiki/Main_Page.html">Main Page</a> and also <a href="/wiki/fake-rooty_page.html">/fake-rooty page</a></p>'
+);
+```
+
+
 ### `uriSuffix`
 
 **Default:** `.html`
 
 Append this suffix to every URL.
 
+#### Example
+
 ```js
 const html = require('markdown-it')()
-  .use(require('markdown-it-wikilinks')({ uriSuffix: '.php' }))
-  .render('[[Main Page]]')
-  // <p><a href="./Main_Page.php">Main Page</a></p>
+  .use(require('markdown-it-wikilinks'), { 
+    uriSuffix: '.php' 
+  })
+  .render('[[Main Page]]');
+assert.strictEqual(
+  html.trim(),
+  '<p><a href="./Main_Page.php">Main Page</a></p>'
+);
 ```
 
 ### `htmlAttributes`
@@ -96,15 +143,22 @@ const html = require('markdown-it')()
 
 An object containing HTML attributes to be applied to every link.
 
+#### Example
+
 ```js
 const attrs = {
   'class': 'wikilink',
-  'rel': 'nofollow'
+  rel: 'nofollow'
 }
 const html = require('markdown-it')()
-  .use(require('markdown-it-wikilinks')({ htmlAttributes: attrs }))
-  .render('[[Main Page]]')
-  // <p><a href="./Main_Page.html" class="wikilink" rel="nofollow">Main Page</a></p>
+  .use(require('markdown-it-wikilinks'), { 
+    htmlAttributes: attrs 
+  })
+  .render('[[Main Page]]');
+assert.strictEqual(
+  html.trim(),
+  '<p><a href="./Main_Page.html" class="wikilink" rel="nofollow">Main Page</a></p>'
+);
 ```
 
 ### `generatePageNameFromLabel`
@@ -116,25 +170,35 @@ But say you wanted a little more flexibility - like being able to have `[[Slate]
 #### Example
 
 ```js
-const _ = require('lodash')
+const _ = require('lodash');
 
 function myCustomPageNameGenerator(label) {
-  return label.split('/').map(function(pathSegment) {
-    // clean up unwanted characters, normalize case and capitalize the first letter
-    pathSegment = _.deburr(pathSegment)
-    pathSegment = pathSegment.replace(/[^\w\s]/g, '')
+  return label
+    .split('/')
+    .map(function(pathSegment) {
+      // clean up unwanted characters, normalize case and capitalize the first letter
+      pathSegment = _.deburr(pathSegment);
+      pathSegment = pathSegment.replace(/[^\w\s]/g, '');
 
-    // normalize case
-    pathSegment = _.capitalize(pathSegment.toLowerCase())
+      // normalize case
+      pathSegment = _.capitalize(pathSegment.toLowerCase());
 
-    return pathSegment
-  })
+      return pathSegment;
+    })
+    .join(' : ');
 }
 
 const html = require('markdown-it')()
-  .use(require('markdown-it-wikilinks')({ generatePageNameFromLabel: myCustomPageNameGenerator }))
-  .render('Vive la [[révolution!]] VIVE LA [[RÉVOLUTION!!!]]')
-  // <p>Vive la <a href="./Revolution.html">révolution!</a> VIVE LA <a href="./Revolution.html">RÉVOLUTION!!!</a></p>
+  .use(require('markdown-it-wikilinks'), { 
+    generatePageNameFromLabel: myCustomPageNameGenerator 
+  })
+  .render(
+    'Vive la [[révolution!]] VIVE LA [[RÉVOLUTION!!!]]\n\nBut no cb for piped [[/Misc/Cats/Slate|kitty]].'
+  );
+assert.strictEqual(
+  html.trim(),
+  '<p>Vive la <a href="./Revolution.html">révolution!</a> VIVE LA <a href="./Revolution.html">RÉVOLUTION!!!</a></p>\n<p>But no cb for piped <a href="/Misc/Cats/Slate.html">kitty</a>.</p>'
+);
 ```
 
 Please note that the `generatePageNameFromLabel` function does not get applied for [piped links](https://meta.wikimedia.org/wiki/Help:Piped_link) such as `[[/Misc/Cats/Slate|kitty]]` since those already come with a target. 
@@ -149,11 +213,75 @@ The default transform does the following things:
 * [sanitize](https://github.com/parshap/node-sanitize-filename) the string
 * replace spaces with underscores
 
+#### Example
+
+```js
+const _ = require('lodash');
+
+function myCustomPageNamePostprocessor(label) {
+  return label
+    .split('/')
+    .map(function(pathSegment) {
+      // clean up unwanted characters, normalize case and capitalize the first letter
+      pathSegment = _.deburr(pathSegment);
+      pathSegment = pathSegment.replace(/[^\w\s]/g, '');
+
+      // normalize case
+      pathSegment = _.capitalize(pathSegment.toLowerCase());
+
+      return pathSegment;
+    })
+    .join('/');
+}
+
+const html = require('markdown-it')()
+  .use(require('markdown-it-wikilinks'), { 
+    postProcessPageName: myCustomPageNamePostprocessor
+  })
+  .render(
+    'Vive la [[révolution!]] VIVE LA [[RÉVOLUTION!!!]]\n\nBut no cb for piped [[/Misc/Cats/Slate|kitty]].'
+  );
+assert.strictEqual(
+  html.trim(),
+  '<p>Vive la <a href="./Revolution.html">révolution!</a> VIVE LA <a href="./Revolution.html">RÉVOLUTION!!!</a></p>\n<p>But no cb for piped <a href="/Misc/Cats/Slate.html">kitty</a>.</p>'
+);
+```
+
 ### `postProcessLabel`
 
 A transform applied to every link label. You can override it just like `generatePageNameFromLabel` (see above).
 
 All the default transform does is trim surrounding whitespace.
+
+
+#### Example
+
+```js
+const _ = require('lodash');
+
+function myCustomLabelPostprocessor(label) {
+  // clean up unwanted characters, normalize case and capitalize the first letter
+  label = _.deburr(label);
+  label = label.replace(/[^\w\s]/g, '');
+
+  // normalize case
+  label = _.capitalize(label.toLowerCase());
+
+  return label;
+}
+
+const html = require('markdown-it')()
+  .use(require('markdown-it-wikilinks'), { 
+    postProcessLabel: myCustomLabelPostprocessor 
+  })
+  .render(
+    'Vive la [[révolution!]] VIVE LA [[RÉVOLUTION!!!]]\n\nBut no cb for piped [[/Misc/Cats/Slate|kitty]].'
+  );
+assert.strictEqual(
+  html.trim(),
+  '<p>Vive la <a href="./révolution!.html">Revolution</a> VIVE LA <a href="./RÉVOLUTION!!!.html">Revolution</a></p>\n<p>But no cb for piped <a href="/Misc/Cats/Slate.html">Kitty</a>.</p>'
+);
+```
 
 ## TODO
 
