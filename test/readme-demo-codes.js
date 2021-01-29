@@ -1,8 +1,11 @@
 /* eslint-env mocha, es6 */
 
-const assert = require('assert');
-const wikilinks = require('../').createTestInstance;
-const markdownIt = require('@gerhobbelt/markdown-it');
+import assert from 'assert';
+import wikilinksPlugin from '../index.js';
+const wikilinks = wikilinksPlugin.createTestInstance;
+import markdownIt from '@gerhobbelt/markdown-it';
+import _ from 'lodash';
+
 
 describe('markdown-it-wikilinks README demo code', function () {
   it('basic usage', () => {
@@ -98,8 +101,6 @@ describe('markdown-it-wikilinks README demo code', function () {
     });
 
     it('generatePageNameFromLabel', () => {
-      const _ = require('lodash');
-
       function myCustomPageNameGenerator(label) {
         return label
           .split('/')
@@ -130,8 +131,6 @@ describe('markdown-it-wikilinks README demo code', function () {
     });
 
     it('postProcessPageName', () => {
-      const _ = require('lodash');
-
       function myCustomPageNamePostprocessor(label) {
         return label
           .split('/')
@@ -162,8 +161,6 @@ describe('markdown-it-wikilinks README demo code', function () {
     });
 
     it('postProcessLabel', () => {
-      const _ = require('lodash');
-
       function myCustomLabelPostprocessor(label) {
         // clean up unwanted characters, normalize case and capitalize the first letter
         label = _.deburr(label);

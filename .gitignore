@@ -1,10 +1,34 @@
+
+# Created by https://www.gitignore.io/api/node,linux,visualstudiocode
+# Then hand-patched to suit us.
+
 # OS X crap
-.DS_Store
+.DS_Store*
+Icon?
+._*
 
 # Windows
 Thumbs.db
 ehthumbs.db
 Desktop.ini
+
+### Linux ###
+*~
+
+# Archives
+*.gz
+*.zip
+*.rar
+*.7z
+
+# KDE directory preferences
+.directory
+
+# Linux trash folder which might appear on any partition or disk
+.Trash-*
+
+# .nfs files are created when an open file is removed but is still being accessed
+.nfs*
 
 # Private files
 _private
@@ -39,6 +63,10 @@ coverage
 
 # nyc test coverage
 .nyc_output
+
+# Profiling output (old and new (Chrome DevTools) style:
+*.cpuprofile
+*.log
 
 # Grunt intermediate storage (https://gruntjs.com/creating-plugins#storing-task-files)
 .grunt
@@ -96,7 +124,6 @@ typings/
 
 # Nuxt.js build / generate output
 .nuxt
-dist
 
 # Gatsby files
 .cache/
@@ -119,6 +146,11 @@ dist
 # TernJS port file
 .tern-port
 
-# misc editor cruft
+### VisualStudioCode ###
+#.vscode/*
+#!.vscode/settings.json
+#!.vscode/tasks.json
+#!.vscode/launch.json
+#!.vscode/extensions.json
 .vscode
 

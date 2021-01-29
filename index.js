@@ -1,6 +1,6 @@
 
-const createPlugin = require('@gerhobbelt/markdown-it-regexp');
-const sanitize = require('sanitize-filename');
+import createPlugin from '@gerhobbelt/markdown-it-regexp';
+import sanitize from 'sanitize-filename';
 
 
 
@@ -63,7 +63,7 @@ const defaultSetup = {
   setup: function (config, options) {
     const defaults = {
       linkPattern: /\[\[([^\x00-\x1f|]+?)(\|([\s\S]+?))?\]\]/,          // accept anything, except control characters (CR, LF, etc) or |
-       // linkPattern: /\[\[([-\w\s\/]+)(\|([-\w\s\/]+))?\]\]/,  // accept words, dashes and whitespace
+      // linkPattern: /\[\[([-\w\s\/]+)(\|([-\w\s\/]+))?\]\]/,          // accept words, dashes and whitespace
 
       baseURL: '/',
       relativeBaseURL: './',
@@ -108,7 +108,7 @@ const plugin = createPlugin(
 plugin.createTestInstance = function (setup) {
   createPlugin.reset();
   const p = createPlugin(
-  // regexp to match: fake one. Will be set up by setup callback instead.
+    // regexp to match: fake one. Will be set up by setup callback instead.
     /./,
 
     Object.assign({}, defaultSetup)
