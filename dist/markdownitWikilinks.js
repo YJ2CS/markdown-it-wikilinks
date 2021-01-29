@@ -1,4 +1,4 @@
-/*! markdown-it-wikilinks 1.1.1-9 https://github.com//GerHobbelt/markdown-it-wikilinks @license MIT */
+/*! markdown-it-wikilinks 1.1.1-10 https://github.com//GerHobbelt/markdown-it-wikilinks @license MIT */
 
 import createPlugin from '@gerhobbelt/markdown-it-regexp';
 import sanitize from 'sanitize-filename';
