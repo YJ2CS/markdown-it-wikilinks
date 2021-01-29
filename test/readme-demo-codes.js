@@ -9,9 +9,9 @@ import _ from 'lodash';
 
 describe('markdown-it-wikilinks README demo code', function () {
   it('basic usage', () => {
-//...and *use* it:
-//
-//```js
+    //...and *use* it:
+    //
+    //```js
     const options = undefined;
     const md = markdownIt().use(wikilinks(), options);
     const html = md.render(
@@ -185,4 +185,42 @@ describe('markdown-it-wikilinks README demo code', function () {
       );
     });
   });
+
+  it('advanced usage (user setup)', () => {
+    //...and *use* it:
+    //
+    //```js
+    const options = {
+      postProcessLabel: function (label) {
+        return label.replace('!', '!!!');
+      },
+      postProcessPageName: function (pageName4Href) {
+        return pageName4Href.replace(/^[a-z_-]/g, '');
+      }
+    };
+
+    const md = markdownIt().use(wikilinks(function testCustomSetup(config, options) {
+
+      // Here we can not only manipulate the new `options` instance, but also tweak the `config` wikilinks class instance itself,
+      // for example overriding the rendering of the link in HTML:
+      config.renderLink = function testRenderLink(info, setup, options, env, tokens, id) {
+
+        // demo: use all attributes, but strip off the href= attribute!
+        let htmlAttrsString = info.htmlAttrs.filter((attr) => !/^href=/.test(attr)).join(' ');
+
+        // demo: show both original label & pageName as extracted from the markdown source,
+        // AND what these were turned in, having been fed through the postprocess functions:
+        return `<linkComponent pageName="${setup.encodeHtmlAttr(info.originalPageName)}" originalLabel="${setup.encodeHtmlAttr(info.originalLabel)}" sourceUrl="${setup.encodeHtmlAttr(info.href)}" ${htmlAttrsString}>${info.label}</linkComponent>`;
+
+      };
+      return options;
+    }), options);
+
+    const html = md.render(
+      'Click [[Wiki Links|here]] to learn about [[/Wiki]] links: [[for various purposes!|A|B]].'
+    );
+    assert.strictEqual(html.trim(),
+      '<p>Click <linkComponent pageName="Wiki Links" originalLabel="here" sourceUrl="./Wiki Links.html" >here</linkComponent> to learn about <linkComponent pageName="/Wiki" originalLabel="/Wiki" sourceUrl="/Wiki.html" >/Wiki</linkComponent> links: <linkComponent pageName="for various purposes!" originalLabel="A|B" sourceUrl="./or various purposes!.html" >A|B</linkComponent>.</p>');
+  });
+
 });
