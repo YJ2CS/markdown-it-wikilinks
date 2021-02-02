@@ -116,7 +116,6 @@ plugin.createTestInstance = function (setup) {
       setup: function customSetup(config, options) {
         options = this.originalSetup(config, options);
         options = this.userSetup(config, options);
-        console.error('setup special invoked!', config, options);
         return options;
       },
       originalSetup: defaultSetup.setup,
@@ -124,7 +123,6 @@ plugin.createTestInstance = function (setup) {
     };
   }
 
-  console.error('custom setup:', setupObj);
   const p = createPlugin( // regexp to match: fake one. Will be set up by setup callback instead.
   /./, Object.assign({}, defaultSetup, setupObj));
   return p;
