@@ -70,11 +70,15 @@ const defaultSetup = {
   renderLink: function wikilinksRenderLink(info, setup, options, env, tokens, id) {
     let htmlAttrsString = info.htmlAttrs.join(' ');
 
-    return `<a ${htmlAttrsString}>${info.label}</a>`;
+    if(match[0].startsWith('!'))
+      return `<img src="${href}"/>`;
+    else
+      return `<a ${htmlAttrsString}>${info.label}</a>`;
+
   },
   setup: function wikilinksSetup(config, options) {
     const defaults = {
-      linkPattern: /\[\[([^\x00-\x1f|]+?)(\|([\s\S]+?))?\]\]/,          // accept anything, except control characters (CR, LF, etc) or |
+      linkPattern: /!?\[\[([^\x00-\x1f|]+?)(\|([\s\S]+?))?\]\]/,          // accept anything, except control characters (CR, LF, etc) or |
       // linkPattern: /\[\[([-\w\s\/]+)(\|([-\w\s\/]+))?\]\]/,          // accept words, dashes and whitespace
 
       baseURL: '/',
