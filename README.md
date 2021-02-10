@@ -11,7 +11,7 @@ Renders [Wikimedia-style links](https://www.mediawiki.org/wiki/Help:Links#Intern
 Install this into your project:
 
 ```bash
-npm --save install markdown-it-wikilinks
+npm --save install https://github.com/YJ2CS/markdown-it-wikilinks
 ```
 
 ...and *use* it:
