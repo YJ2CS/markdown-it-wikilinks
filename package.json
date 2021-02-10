@@ -13,7 +13,7 @@
   "author": "Julio Sepia <jsepia@juliosepia.com>",
   "repository": "kwvanderlinde/markdown-it-wikilinks",
   "license": "MIT",
-  "type": "module",
+  #"type": "module",
   "source": "index.js",
   "main": "dist/markdownItWikiLinks.js",
   "engines": {
