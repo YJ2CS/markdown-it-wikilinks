@@ -93,7 +93,8 @@ const defaultSetup = {
       postProcessPageName: (pageName) => {
         pageName = pageName.trim();
         pageName = pageName.split('/').map(sanitize).join('/');
-        pageName = pageName.replace(/\s+/g, '_');
+//         pageName = pageName.replace(/\s+/g, '_');
+        pageName = pageName.replace(/\s+/g, '-');
         return pageName;
       },
       postProcessLabel: (label) => {
